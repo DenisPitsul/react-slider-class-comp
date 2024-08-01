@@ -20,13 +20,17 @@ class Carousel extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.delay !== this.state.delay) {
-      clearInterval(this.intervalId);
-      this.intervalId = setTimeout(this.changeSlide, this.state.delay);
+      if (this.state.isPlaying) {
+        clearInterval(this.intervalId);
+        this.intervalId = setInterval(this.changeSlide, this.state.delay);
+      }
     }
-    if (this.state.isPlaying) {
-      this.intervalId = setTimeout(this.changeSlide, this.state.delay);
-    } else {
-      clearInterval(this.intervalId);
+    if (prevState.isPlaying !== this.state.isPlaying) {
+      if (this.state.isPlaying) {
+        this.intervalId = setInterval(this.changeSlide, this.state.delay);
+      } else {
+        clearInterval(this.intervalId);
+      }
     }
   }
 
